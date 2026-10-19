@@ -5,26 +5,20 @@ local k = import 'github.com/jsonnet-libs/k8s-libsonnet/1.36/main.libsonnet';
   local containerPort = k.core.v1.containerPort,
   local deployment = k.apps.v1.deployment,
 
-  container:
+  _container::
     container.new($.common.name, $._images.app) +
     container.withImagePullPolicy($._config.image.pullPolicy) +
-    container.withPorts([containerPort.new(name='http', port=$._config.service.port)]) +
-    container.withReadinessProbe(
-      k.core.v1.probe.new(
-        k.core.v1.httpGetAction.new('/',$._config.service.port),
-      ),
-    ) +
-    container.withLivenessProbe(
-      k.core.v1.probe.new(
-        k.core.v1.httpGetAction.new('/',$._config.service.port),
-      ),
-    ) +
+    container.withPorts([{ name: 'http', containerPort: $._config.service.port, protocol: 'TCP' }]) +
+    container.mixin.readinessProbe.httpGet.withPath('/') +
+    container.mixin.readinessProbe.httpGet.withPort($._config.service.port) +
+    container.mixin.livenessProbe.httpGet.withPath('/') +
+    container.mixin.livenessProbe.httpGet.withPort($._config.service.port) +
     (if $._config.resources != {} then
       container.withResources($._config.resources)
     else {}),
 
   deployment:
-    deployment.new($.common.fullname, $._config.replicaCount, [$.container]) +
+    deployment.new($.common.fullname, $._config.replicaCount, [$._container]) +
     deployment.mixin.spec.selector.withMatchLabels($.common.selectorLabels) +
     deployment.mixin.spec.template.metadata.withLabels($.common.selectorLabels) +
     (if $._config.podAnnotations != {} then

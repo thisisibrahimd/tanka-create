@@ -4,17 +4,17 @@ local k = import 'github.com/jsonnet-libs/k8s-libsonnet/1.36/main.libsonnet';
   common:: {
     // Mirrors: default.name
     name::
-      local base = if $._config.nameOverride != '' then $._config.nameOverride else $.library.name;
-      k.util.trunc(63, base),
+      local base = if $._config.nameOverride != '' then $._config.nameOverride else $._library.name;
+      if std.length(base) > 63 then std.substr(base, 0, 63) else base,
 
     // Mirrors: default.fullname
     // Tanka has no .Release.Name — environments override fullnameOverride
     fullname::
       if $._config.fullnameOverride != '' then
-        k.util.trunc(63, $._config.fullnameOverride)
+        local v = $._config.fullnameOverride;
+        if std.length(v) > 63 then std.substr(v, 0, 63) else v
       else
-        local base = if $._config.nameOverride != '' then $._config.nameOverride else $.library.name;
-        k.util.trunc(63, '%s-%s' % [$.library.name, base]),
+        $.common.name,
 
     // Mirrors: default.labels
     labels:: {
@@ -44,6 +44,6 @@ local k = import 'github.com/jsonnet-libs/k8s-libsonnet/1.36/main.libsonnet';
         if $._config.serviceAccount.name != '' then
           $._config.serviceAccount.name
         else
-          $.library.name,
+          $._library.name,
   },
 }
