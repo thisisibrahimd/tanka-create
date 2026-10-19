@@ -3,13 +3,13 @@
 [![Release](https://img.shields.io/github/v/release/thisisibrahimd/tanka-create?label=latest)](https://github.com/thisisibrahimd/tanka-create/releases/latest)
 [![Test](https://github.com/thisisibrahimd/tanka-create/actions/workflows/test.yml/badge.svg)](https://github.com/thisisibrahimd/tanka-create/actions/workflows/test.yml)
 
-Scaffold Tanka/libsonnet libraries from an embedded template. Mirrors the
-structure of a default Helm chart (deployment, service, service account,
-HPA, ingress, HTTPRoute) for Kubernetes clusters using Tanka.
+Scaffold libsonnet libraries for [Tanka](https://tanka.dev) deployment. Mirrors the
+helpers and resource of a default Helm chart (deployment, service, service account,
+HPA, ingress, HTTPRoute) from ```helm create```.
 
 ## Install
 
-### Go toolchain
+### Go
 
 ```sh
 go install github.com/thisisibrahimd/tanka-create@latest
@@ -27,23 +27,19 @@ Download binaries from [latest release](https://github.com/thisisibrahimd/tanka-
 
 ## Usage
 
-1. Scaffold a library:
+1. Scaffold a library
 
 ```sh
 tanka-create my-app
 ```
 
-2. Initialize dependencies:
+2. Initialize dependencies
 
 ```sh
 cd my-app && jb install
 ```
 
-3. Use with Tanka:
-
-```sh
-tk show environments/default/main.jsonnet
-```
+Your library is now ready to be imported by your tanka environment
 
 ## Scaffolded Library Layout
 
