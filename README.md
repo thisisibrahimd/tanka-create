@@ -15,7 +15,7 @@ HPA, ingress, HTTPRoute) from ```helm create```.
 go install github.com/thisisibrahimd/tanka-create@latest
 ```
 
-### mise
+### [mise](https://mise.jdx.dev/)
 
 ```sh
 mise use github:thisisibrahimd/tanka-create
@@ -23,7 +23,7 @@ mise use github:thisisibrahimd/tanka-create
 
 ### GitHub Releases
 
-Download binaries from [latest release](https://github.com/thisisibrahimd/tanka-create/releases/latest).
+Download binaries from [github releases](https://github.com/thisisibrahimd/tanka-create/releases/latest).
 
 ## Usage
 
