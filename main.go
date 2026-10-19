@@ -13,10 +13,25 @@ import (
 //go:embed default/*
 var templateFS embed.FS
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Fprintf(os.Stderr, "Usage: %s <library-name>\n", os.Args[0])
 		os.Exit(1)
+	}
+
+	switch os.Args[1] {
+	case "--version", "-v":
+		fmt.Printf("tanka-create %s (commit %s, built %s)\n", version, commit, date)
+		return
+	case "--help", "-h":
+		fmt.Fprintf(os.Stderr, "Usage: %s <library-name>\n", os.Args[0])
+		return
 	}
 
 	tankaCreate(os.Args[1])
